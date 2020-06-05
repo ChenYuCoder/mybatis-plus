@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.user.UserMapper">
+
+  <select id="getUserGroupByUserId"
+    resultType="com.shop.user.UserGroup">
+    select user.*, `group`.name as group_name
+    from user
+           left join `group` on user.group_id = `group`.group_id
+    where user.id = #{id}
+  </select>
+
+  <select id="getUserGroupOfWrapper"
+    resultType="com.shop.user.UserGroup">
+    select user.*, `group`.name as group_name
+    from user
+           left join `group` on user.group_id = `group`.group_id
+      ${ew.customSqlSegment}
+    limit 1
+  </select>
+
+  <select id="selectUserPage" resultType="com.shop.user.User">
+    SELECT id, name
+    FROM user
+    WHERE group_id = #{groupId}
+  </select>
+
+</mapper>

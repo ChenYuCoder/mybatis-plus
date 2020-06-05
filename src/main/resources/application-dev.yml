@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /ShopSystem
+spring:
+  application:
+    name: shop-system
+  profiles: dev
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.17.46:3306/shop_system?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+      username: root
+      password: iptvadmin
+      initialSize: 10   #初始化连接个数
+      minIdle: 10       #最小空闲连接个数
+      maxActive: 100    #最大连接个数
+      maxWait: 60000    #获取连接时最大等待时间，单位毫秒。
+      timeBetweenEvictionRunsMillis: 60000  #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      minEvictableIdleTimeMillis: 30000     #配置一个连接在池中最小生存的时间，单位是毫秒
+      validationQuery: SELECT 1 FROM DUAL  #用来检测连接是否有效的sql，要求是一个查询语句。
+      testWhileIdle: true       #建议配置为true，不影响性能，并且保证安全性。如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      testOnBorrow: false        #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false       #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      poolPreparedStatements: false #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      filters: stat  #通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat，日志用的filter:log4j，防御sql注入的filter:wall
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+  flyway:
+    enabled: true
+    url: jdbc:mysql://192.168.17.46:3306/shop_system?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    user: root
+    password: iptvadmin
+#    clean-disabled: true
+    locations: classpath:db
+logging:
+  config: classpath:log4j2.xml
+mybatis:
+  mapper-locations:  classpath:mapper/*.xml
